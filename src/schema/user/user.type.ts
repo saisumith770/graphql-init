@@ -2,31 +2,12 @@ import {
     GraphQLObjectType,
     GraphQLString as string,
     getNullableType as nullable,
-    GraphQLFieldConfig,
-    GraphQLScalarType,
     GraphQLBoolean as boolean,
     GraphQLInt as int,
     GraphQLList as array
 } from 'graphql'
 
-import { Kind } from 'graphql/language';
-
-const CustomDate = new GraphQLScalarType({
-    name: 'Date',
-    description: 'Date custom scalar type',
-    parseValue(value) {
-        return new Date(value); // value from the client
-    },
-    serialize(value) {
-        return value.getTime(); // value sent to the client
-    },
-    parseLiteral(ast) {
-        if (ast.kind === Kind.INT) {
-            return parseInt(ast.value, 10); // ast value is always in string format
-        }
-        return null;
-    },
-})
+import Date from '../custom.types/date'
 
 export default new GraphQLObjectType({
     description: `
@@ -37,7 +18,7 @@ export default new GraphQLObjectType({
         user_id: { type: string },
         username: { type: string },
         domain: { type: string },
-        created_at: { type: CustomDate },
+        created_at: { type: Date },
         confirmed: { type: boolean },
         viewers: { type: int },
         subscription: { type: int },
