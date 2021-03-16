@@ -14,7 +14,7 @@ export const vod: GraphQLFieldConfig<any, any> = {
     type: Content,
     args: {
         user_id: { type: nullable(string) },
-        vod_id: { type: nullable(string) },
+        vod_id: { type: string },
         title: { type: nullable(string) },
         platform: { type: nullable(Platforms) },
         tags: { type: nullable(array(string)) }

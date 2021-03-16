@@ -10,14 +10,14 @@ import {
 import Date from '../../custom.types/date'
 
 import Content from '../content/content.type'
-import { Platforms } from '../content/content.graph.type'
+import Integration from '../integration/integration.type'
 
-export default new GraphQLObjectType({
+const User: GraphQLObjectType = new GraphQLObjectType({
     description: `
         This is a User object that represents each user in the vibe database.
     `,
     name: "user",
-    fields: {
+    fields: () => ({
         user_id: { type: string },
         username: { type: string },
         domain: { type: string },
@@ -34,15 +34,37 @@ export default new GraphQLObjectType({
         channel_trailer: { type: nullable(string) },
         banner: { type: nullable(string) },
         tags: { type: nullable(array(string)) },
-        content: {
+        content: { // get all the user content
             type: Content,
-            args: {
-                vod_id: { type: string },
-                platform: { type: Platforms }
-            },
-            resolve: (_, { vod_id, platform }, ctx) => {
+            resolve: (parent, __, ctx) => {
+                return {}
+            }
+        },
+        playlists: { // get all user playlists
+            type: array(string),
+            resolve: () => {
+                return {}
+            }
+        },
+        subscriptions: { // get all the creators subscribed to
+            type: array(User),
+            resolve: () => {
+                return {}
+            }
+        },
+        subscribers: { // get all the viewers
+            type: array(User),
+            resolve: () => {
+                return {}
+            }
+        },
+        integrations: { // get all the connected platforms
+            type: Integration,
+            resolve: () => {
                 return {}
             }
         }
-    }
+    })
 })
+
+export default User

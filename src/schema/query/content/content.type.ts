@@ -26,13 +26,13 @@ export default new GraphQLObjectType({
         url: { type: string },
         tags: { type: nullable(array(string)) },
         archived: { type: nullable(boolean) },
-        creator: {
+        creator: { // creator of the vod
             type: string,
             resolve: (parent, _, ctx) => {
                 return {}
             }
         },
-        playlists: {
+        playlists: { // playlists that the vod belongs to
             type: array(string),
             resolve: (parent, _, ctx) => {
                 return {}
