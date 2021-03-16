@@ -13,6 +13,19 @@ import {
     vods
 } from './query/content/graph.field'
 
+import {
+    feeds
+} from './query/feed/graph.field'
+
+import {
+    integration,
+    integrations
+} from './query/integration/graph.field'
+
+import {
+    settings
+} from './query/settings/graph.field'
+
 export default new GraphQLSchema({
     description: `
         This is a graphql api served with express and express-graphql. It implements standard
@@ -26,7 +39,11 @@ export default new GraphQLSchema({
             user,
             users,
             vod,
-            vods
+            vods,
+            feeds,
+            integration,
+            integrations,
+            settings
         }
     }),
     mutation: new GraphQLObjectType({

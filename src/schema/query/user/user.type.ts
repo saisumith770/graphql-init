@@ -12,6 +12,7 @@ import Date from '../../custom.types/date'
 import Content from '../content/content.type'
 import Integration from '../integration/integration.type'
 import Settings from '../settings/settings.type'
+import Feed from '../feed/feed.type'
 
 const User: GraphQLObjectType = new GraphQLObjectType({
     description: `
@@ -67,6 +68,12 @@ const User: GraphQLObjectType = new GraphQLObjectType({
         },
         settings: { // get all the user settings
             type: Settings,
+            resolve: () => {
+                return {}
+            }
+        },
+        feed: {
+            type: array(Feed),
             resolve: () => {
                 return {}
             }

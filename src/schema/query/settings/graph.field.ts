@@ -9,7 +9,7 @@ import Settings from './settings.type'
 
 import { users as fakeUsers } from '../../../fakedata/user'
 
-export const user: GraphQLFieldConfig<any, any> = {
+export const settings: GraphQLFieldConfig<any, any> = {
     type: Settings,
     args: {
         user_id: { type: string },
