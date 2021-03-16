@@ -1,13 +1,13 @@
 import {
+    array,
+    boolean,
     GraphQLObjectType,
-    GraphQLString as string,
-    getNullableType as nullable,
-    GraphQLBoolean as boolean,
-    GraphQLInt as int,
-    GraphQLList as array
-} from 'graphql'
+    int,
+    nullable,
+    string
+} from '../../graph.types'
 
-import Date from '../custom.types/date'
+import Date from '../../custom.types/date'
 
 export default new GraphQLObjectType({
     description: `

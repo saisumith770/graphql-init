@@ -6,7 +6,12 @@ import {
 import {
     users,
     user
-} from './user/graph.field'
+} from './query/user/graph.field'
+
+import {
+    vod,
+    vods
+} from './query/content/graph.field'
 
 export default new GraphQLSchema({
     description: `
@@ -19,7 +24,9 @@ export default new GraphQLSchema({
         name: "PrimaryQuery",
         fields: {
             user,
-            users
+            users,
+            vod,
+            vods
         }
     }),
     mutation: new GraphQLObjectType({

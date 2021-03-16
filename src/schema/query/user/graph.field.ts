@@ -1,13 +1,13 @@
 import {
-    GraphQLString as string,
-    getNullableType as nullable,
-    GraphQLList as array,
+    array,
+    nullable,
+    string,
     GraphQLFieldConfig
-} from 'graphql'
+} from '../../graph.types'
 
 import User from './user.type'
 
-import { users as fakeUsers } from '../../fakedata/user'
+import { users as fakeUsers } from '../../../fakedata/user'
 
 export const user: GraphQLFieldConfig<any, any> = {
     type: User,
@@ -36,6 +36,6 @@ export const users: GraphQLFieldConfig<any, any> = {
         domain: { type: nullable(string) }
     },
     resolve: function () {
-        return users
+        return fakeUsers
     }
 }
