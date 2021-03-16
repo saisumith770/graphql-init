@@ -11,6 +11,7 @@ import Date from '../../custom.types/date'
 
 import Content from '../content/content.type'
 import Integration from '../integration/integration.type'
+import Settings from '../settings/settings.type'
 
 const User: GraphQLObjectType = new GraphQLObjectType({
     description: `
@@ -60,6 +61,12 @@ const User: GraphQLObjectType = new GraphQLObjectType({
         },
         integrations: { // get all the connected platforms
             type: Integration,
+            resolve: () => {
+                return {}
+            }
+        },
+        settings: { // get all the user settings
+            type: Settings,
             resolve: () => {
                 return {}
             }
