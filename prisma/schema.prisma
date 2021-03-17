@@ -90,34 +90,37 @@ model temp_tokens {
 }
 
 model users {
-  user_id         String            @id @db.VarChar(36)
-  photo           String?           @db.Text
-  username        String            @unique @db.VarChar(20)
-  domain          String            @unique @db.VarChar(20)
-  password        String            @db.VarChar(60)
-  created_at      DateTime?         @default(now()) @db.DateTime(0)
-  confirmed       users_confirmed?  @default(false)
-  phone           String?           @db.VarChar(15)
-  email           String?           @unique @db.VarChar(50)
-  description     String?           @db.Text
-  viewers         Int?              @default(0)
-  subscription    Int?              @default(0)
-  vods            Int?              @default(0)
-  channelInfo     users_channelInfo
-  state           users_state
-  twofactor       users_twofactor?  @default(false)
-  channel_trailer String?           @db.Text
-  banner          String?           @db.Text
-  tags            String?           @db.Text
-  activity        activity?
-  integrations    integrations[]
-  playlist_vods   playlist_vods[]
-  playlists       playlists[]
+  user_id          String            @id @db.VarChar(36)
+  photo            String?           @db.Text
+  username         String            @unique @db.VarChar(20)
+  domain           String            @unique @db.VarChar(20)
+  password         String            @db.VarChar(60)
+  created_at       DateTime?         @default(now()) @db.DateTime(0)
+  confirmed        users_confirmed?  @default(false)
+  phone            String?           @db.VarChar(15)
+  email            String?           @unique @db.VarChar(50)
+  description      String?           @db.Text
+  viewers          Int?              @default(0)
+  subscription     Int?              @default(0)
+  vods             Int?              @default(0)
+  channelInfo      users_channelInfo
+  state            users_state
+  twofactor        users_twofactor?  @default(false)
+  channel_trailer  String?           @db.Text
+  banner           String?           @db.Text
+  tags             String?           @db.Text
+  activity         activity?
+  integrations     integrations[]
+  playlist_vods    playlist_vods[]
+  playlists        playlists[]
+  view_vod         view_vod[]
+  vods_usersTovods vods[]
 }
 
 model view_vod {
   viewer_id String @db.VarChar(36)
   vod_id    String @db.VarChar(36)
+  users     users  @relation(fields: [viewer_id], references: [user_id])
 
   @@id([viewer_id, vod_id])
 }
@@ -133,6 +136,7 @@ model vods {
   url          String?        @db.Text
   tags         Json?
   archived     vods_archived?
+  users        users          @relation(fields: [user_id], references: [user_id])
 
   @@id([user_id, vod_id])
 }

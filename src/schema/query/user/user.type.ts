@@ -13,6 +13,7 @@ import Content from '../content/content.type'
 import Integration from '../integration/integration.type'
 import Settings from '../settings/settings.type'
 import Feed from '../feed/feed.type'
+import Playlist from '../playlists/playlist.type'
 
 const User: GraphQLObjectType = new GraphQLObjectType({
     description: `
@@ -37,45 +38,73 @@ const User: GraphQLObjectType = new GraphQLObjectType({
         banner: { type: nullable(string) },
         tags: { type: nullable(array(string)) },
         content: { // get all the user content
-            type: Content,
-            resolve: (parent, __, ctx) => {
-                return {}
+            type: array(Content),
+            resolve: async (parent, __, ctx) => {
+                return ctx.prisma.vods.findMany({
+                    where: {
+                        user_id: parent.user_id
+                    }
+                })
             }
         },
         playlists: { // get all user playlists
-            type: array(string),
-            resolve: () => {
-                return {}
+            type: array(Playlist),
+            resolve: async (parent, __, ctx) => {
+                return ctx.prisma.playlists.findMany({
+                    where: {
+                        user_id: parent.user_id
+                    }
+                })
             }
         },
         subscriptions: { // get all the creators subscribed to
             type: array(User),
-            resolve: () => {
-                return {}
+            resolve: async (parent, _, ctx) => {
+                return ctx.prisma.subscription_manager.findMany({
+                    where: {
+                        viewer_id: parent.user_id
+                    }
+                })
             }
         },
         subscribers: { // get all the viewers
             type: array(User),
-            resolve: () => {
-                return {}
+            resolve: async (parent, _, ctx) => {
+                return ctx.prisma.subscription_manager.findMany({
+                    where: {
+                        creator_id: parent.user_id
+                    }
+                })
             }
         },
         integrations: { // get all the connected platforms
             type: Integration,
-            resolve: () => {
-                return {}
+            resolve: async (parent, _, ctx) => {
+                return ctx.prisma.integrations.findMany({
+                    where: {
+                        user_id: parent.user_id
+                    }
+                })
             }
         },
         settings: { // get all the user settings
             type: Settings,
-            resolve: () => {
-                return {}
+            resolve: async (parent, _, ctx) => {
+                return ctx.prisma.settings.findFirst({
+                    where: {
+                        user_id: parent.user_id
+                    }
+                })
             }
         },
         feed: {
             type: array(Feed),
-            resolve: () => {
-                return {}
+            resolve: async (parent, _, ctx) => {
+                return ctx.prisma.feed.findMany({
+                    where: {
+                        user_id: parent.user_id
+                    }
+                })
             }
         }
     })

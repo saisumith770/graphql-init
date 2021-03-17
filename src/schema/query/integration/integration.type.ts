@@ -7,6 +7,7 @@ import {
 import Date from '../../custom.types/date'
 
 import { Platforms } from '../content/content.graph.type'
+import User from '../user/user.type'
 
 const Integration: GraphQLObjectType = new GraphQLObjectType({
     description: `
@@ -22,7 +23,13 @@ const Integration: GraphQLObjectType = new GraphQLObjectType({
         access_token: { type: string },
         refresh_token: { type: string },
         platform_user_id: { type: string },
-        created_at: { type: Date }
+        created_at: { type: Date },
+        user: {
+            type: string,
+            resolve: () => {
+                return {}
+            }
+        }
     })
 })
 

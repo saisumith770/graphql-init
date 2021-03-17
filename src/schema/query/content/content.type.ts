@@ -8,6 +8,7 @@ import {
 
 import Date from '../../custom.types/date'
 import { Platforms } from './content.graph.type'
+import User from '../user/user.type'
 
 export default new GraphQLObjectType({
     description: `
@@ -34,6 +35,12 @@ export default new GraphQLObjectType({
         playlists: { // playlists that the vod belongs to
             type: array(string),
             resolve: (parent, _, ctx) => {
+                return {}
+            }
+        },
+        user: {
+            type: string,
+            resolve: () => {
                 return {}
             }
         }

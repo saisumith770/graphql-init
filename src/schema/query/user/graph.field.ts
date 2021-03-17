@@ -7,7 +7,7 @@ import {
 
 import User from './user.type'
 
-import { users as fakeUsers } from '../../../fakedata/user'
+type whereClause = { user_id: string, username: string, email: string }
 
 export const user: GraphQLFieldConfig<any, any> = {
     type: User,
@@ -17,13 +17,14 @@ export const user: GraphQLFieldConfig<any, any> = {
         email: { type: nullable(string) },
         domain: { type: nullable(string) }
     },
-    resolve: function (_, { username, user_id, email }, ctx) {
-        return fakeUsers.filter(item => {
-            const usernameCondition = username ? item.username === username : true
-            const user_idCondition = user_id ? item.user_id === user_id : true
-            const emailCondition = email ? item.email === email : true
-            return (usernameCondition && user_idCondition && emailCondition)
-        })[0]
+    resolve: async function (_, { username, user_id, email }, ctx) {
+        const where: Partial<whereClause> = await {}
+        if (user_id) where.user_id = await user_id
+        if (username) where.username = await username
+        if (email) where.email = await email
+        return ctx.prisma.users.findFirst({
+            where
+        })
     }
 }
 
@@ -35,7 +36,13 @@ export const users: GraphQLFieldConfig<any, any> = {
         email: { type: nullable(string) },
         domain: { type: nullable(string) }
     },
-    resolve: function () {
-        return fakeUsers
+    resolve: async function (_, { username, user_id, email }, ctx) {
+        const where: Partial<whereClause> = await {}
+        if (user_id) where.user_id = await user_id
+        if (username) where.username = await username
+        if (email) where.email = await email
+        return ctx.prisma.users.findMany({
+            where
+        })
     }
 }

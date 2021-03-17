@@ -26,6 +26,10 @@ import {
     settings
 } from './query/settings/graph.field'
 
+import {
+    playlists
+} from './query/playlists/graph.field'
+
 import { user as user_mutation } from './mutations/user/graph.field'
 import { content as content_mutation } from './mutations/content/graph.field'
 import { settings as settings_mutation } from './mutations/settings/graph.field'
@@ -47,7 +51,8 @@ export default new GraphQLSchema({
             feeds,
             integration,
             integrations,
-            settings
+            settings,
+            playlists
         }
     }),
     mutation: new GraphQLObjectType({

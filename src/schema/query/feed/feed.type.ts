@@ -21,8 +21,14 @@ const Feed: GraphQLObjectType = new GraphQLObjectType({
         deep_link: { type: string },
         preview: { type: string },
         creator: {
-            type: User,
+            type: string,
             resove: () => {
+                return {}
+            }
+        },
+        viewer: {
+            type: string,
+            resolve: () => {
                 return {}
             }
         }

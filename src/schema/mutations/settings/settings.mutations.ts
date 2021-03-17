@@ -15,12 +15,7 @@ const Settings: GraphQLInputObjectType = new GraphQLInputObjectType({
         theme: { type: string },
         disable_banner: { type: boolean },
         disable_trailer: { type: boolean },
-        device: {
-            type: string,
-            resolve: () => {
-                return {}
-            }
-        }
+        device: { type: string }
     })
 })
 
