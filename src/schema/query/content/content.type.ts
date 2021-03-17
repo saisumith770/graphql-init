@@ -3,7 +3,6 @@ import {
     boolean,
     GraphQLObjectType,
     int,
-    nullable,
     string
 } from '../../graph.types'
 

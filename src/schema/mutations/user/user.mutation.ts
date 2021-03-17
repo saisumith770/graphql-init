@@ -1,10 +1,8 @@
-import { GraphQLInputObjectType, GraphQLObjectType } from 'graphql'
+import { GraphQLInputObjectType } from 'graphql'
 import {
     array,
     int,
-    nullable,
     string,
-    inputType
 } from '../../graph.types'
 
 const User: GraphQLInputObjectType = new GraphQLInputObjectType({

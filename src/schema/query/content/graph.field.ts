@@ -19,7 +19,7 @@ export const vod: GraphQLFieldConfig<any, any> = {
         platform: { type: nullable(Platforms) },
         tags: { type: nullable(array(string)) }
     },
-    resolve: function (_, { user_id, vod_id, title, platform, tags }, ctx) {
+    resolve: function (_, { }, ctx) {
         return fakeUsers
     }
 }

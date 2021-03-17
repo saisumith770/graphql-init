@@ -1,7 +1,6 @@
 import {
     GraphQLSchema,
     GraphQLObjectType,
-    GraphQLInputObjectType
 } from 'graphql'
 
 import {
@@ -29,6 +28,7 @@ import {
 
 import { user as user_mutation } from './mutations/user/graph.field'
 import { content as content_mutation } from './mutations/content/graph.field'
+import { settings as settings_mutation } from './mutations/settings/graph.field'
 
 export default new GraphQLSchema({
     description: `
@@ -54,7 +54,8 @@ export default new GraphQLSchema({
         name: "mutations",
         fields: {
             user: user_mutation,
-            content: content_mutation
+            content: content_mutation,
+            settings: settings_mutation
         }
     })
 })

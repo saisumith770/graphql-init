@@ -1,10 +1,7 @@
-import { GraphQLInputObjectType, GraphQLObjectType } from 'graphql'
+import { GraphQLInputObjectType } from 'graphql'
 import {
     array,
-    int,
-    nullable,
     string,
-    inputType,
     boolean
 } from '../../graph.types'
 
@@ -14,13 +11,13 @@ const Content: GraphQLInputObjectType = new GraphQLInputObjectType({
     `,
     name: "content_mutation",
     fields: () => ({
-        title:{type:string},
-        thumbnail:{type:string},
-        platform:{type:string},
-        url:{type:string},
-        tags:{type:array(string)},
-        archived:{type:boolean},
-        playlists:{type:array(string)}
+        title: { type: string },
+        thumbnail: { type: string },
+        platform: { type: string },
+        url: { type: string },
+        tags: { type: array(string) },
+        archived: { type: boolean },
+        playlists: { type: array(string) }
     })
 })
 
