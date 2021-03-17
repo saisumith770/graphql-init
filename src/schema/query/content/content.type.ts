@@ -24,8 +24,8 @@ export default new GraphQLObjectType({
         published_at: { type: Date },
         platform: { type: Platforms },
         url: { type: string },
-        tags: { type: nullable(array(string)) },
-        archived: { type: nullable(boolean) },
+        tags: { type: array(string) },
+        archived: { type: boolean },
         creator: { // creator of the vod
             type: string,
             resolve: (parent, _, ctx) => {

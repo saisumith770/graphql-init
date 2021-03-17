@@ -1,0 +1,197 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model activity {
+  user_id String          @id @db.VarChar(36)
+  state   activity_state?
+  users   users           @relation(fields: [user_id], references: [user_id])
+}
+
+model devices {
+  user_id     String    @db.VarChar(36)
+  device_name String    @db.VarChar(100)
+  created_at  DateTime? @default(now()) @db.DateTime(0)
+
+  @@id([user_id, device_name])
+}
+
+model feed {
+  user_id   String    @id @db.VarChar(36)
+  feed_id   String?   @unique @db.VarChar(36)
+  username  String?   @db.VarChar(20)
+  message   String?   @db.Text
+  timestamp DateTime? @default(now()) @db.DateTime(0)
+}
+
+model integrations {
+  user_id          String                      @db.VarChar(36)
+  platform         String                      @db.VarChar(10)
+  accountName      String?                     @db.VarChar(20)
+  accountURL       String?                     @db.Text
+  showOnProfile    integrations_showOnProfile?
+  access_token     String?                     @db.Text
+  refresh_token    String?                     @db.Text
+  platform_user_id String?                     @db.Text
+  created_at       DateTime?                   @default(now()) @db.DateTime(0)
+  users            users                       @relation(fields: [user_id], references: [user_id])
+
+  @@id([user_id, platform])
+}
+
+model playlist_vods {
+  user_id    String    @db.VarChar(36)
+  name       String    @db.VarChar(20)
+  vod_id     String    @db.VarChar(36)
+  created_at DateTime? @db.DateTime(0)
+  users      users     @relation(fields: [user_id], references: [user_id])
+
+  @@id([name, user_id, vod_id])
+  @@index([user_id], name: "user_ref_playlist_vods")
+}
+
+model playlists {
+  user_id    String    @db.VarChar(36)
+  name       String    @db.VarChar(20)
+  created_at DateTime? @db.DateTime(0)
+  vods       Int?
+  users      users     @relation(fields: [user_id], references: [user_id])
+
+  @@id([user_id, name])
+}
+
+model settings {
+  user_id         String                    @id @db.VarChar(36)
+  theme           settings_theme?
+  disable_banner  settings_disable_banner?
+  disable_trailer settings_disable_trailer?
+}
+
+model subscription_manager {
+  creator_id    String    @db.VarChar(36)
+  viewer_id     String    @db.VarChar(36)
+  subscribed_at DateTime? @default(now()) @db.DateTime(0)
+  creator_type  String?   @db.VarChar(20)
+  viewer_type   String?   @db.VarChar(20)
+
+  @@id([creator_id, viewer_id])
+  @@index([viewer_id], name: "fk_viewer")
+}
+
+model temp_tokens {
+  user_id    String    @id @db.VarChar(36)
+  qr_token   String?   @db.Text
+  created_at DateTime? @default(now()) @db.DateTime(0)
+}
+
+model users {
+  user_id         String            @id @db.VarChar(36)
+  photo           String?           @db.Text
+  username        String            @unique @db.VarChar(20)
+  domain          String            @unique @db.VarChar(20)
+  password        String            @db.VarChar(60)
+  created_at      DateTime?         @default(now()) @db.DateTime(0)
+  confirmed       users_confirmed?  @default(false)
+  phone           String?           @db.VarChar(15)
+  email           String?           @unique @db.VarChar(50)
+  description     String?           @db.Text
+  viewers         Int?              @default(0)
+  subscription    Int?              @default(0)
+  vods            Int?              @default(0)
+  channelInfo     users_channelInfo
+  state           users_state
+  twofactor       users_twofactor?  @default(false)
+  channel_trailer String?           @db.Text
+  banner          String?           @db.Text
+  tags            String?           @db.Text
+  activity        activity?
+  integrations    integrations[]
+  playlist_vods   playlist_vods[]
+  playlists       playlists[]
+}
+
+model view_vod {
+  viewer_id String @db.VarChar(36)
+  vod_id    String @db.VarChar(36)
+
+  @@id([viewer_id, vod_id])
+}
+
+model vods {
+  user_id      String         @db.VarChar(36)
+  vod_id       String         @db.VarChar(36)
+  title        String?        @db.Text
+  thumbnail    String?        @db.Text
+  views        Int?
+  published_at DateTime?      @default(now()) @db.DateTime(0)
+  platform     String?        @db.VarChar(15)
+  url          String?        @db.Text
+  tags         Json?
+  archived     vods_archived?
+
+  @@id([user_id, vod_id])
+}
+
+enum activity_state {
+  offline
+  online
+  STREAMING
+  LISTENING
+  PLAYING
+  CHATTING
+}
+
+enum integrations_showOnProfile {
+  true
+  false
+}
+
+enum settings_theme {
+  dark
+  light
+}
+
+enum settings_disable_banner {
+  true
+  false
+}
+
+enum settings_disable_trailer {
+  true
+  false
+}
+
+enum users_confirmed {
+  true
+  false
+}
+
+enum users_channelInfo {
+  banned
+  standard
+  premium
+}
+
+enum users_state {
+  offline
+  online
+  STREAMING
+  CHATTING
+  PLAYING
+  LISTENING
+}
+
+enum users_twofactor {
+  true
+  false
+}
+
+enum vods_archived {
+  true
+  false
+}

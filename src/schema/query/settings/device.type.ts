@@ -1,16 +1,9 @@
 import {
-    array,
-    boolean,
     GraphQLObjectType,
-    int,
-    nullable,
     string
 } from '../../graph.types'
 
 import Date from '../../custom.types/date'
-
-import Content from '../content/content.type'
-import Integration from '../integration/integration.type'
 
 const Device: GraphQLObjectType = new GraphQLObjectType({
     description: `

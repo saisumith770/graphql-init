@@ -1,6 +1,8 @@
 import express from 'express'
 import { graphqlHTTP } from 'express-graphql'
 
+import { PrismaClient } from '@prisma/client'
+
 import schema from './schema/schema'
 
 const app = express()
@@ -10,7 +12,8 @@ app.use('/graphql', graphqlHTTP((req, res, params) => ({
     context: {
         req,
         res,
-        params
+        params,
+        prisma: new PrismaClient()
     },
     graphiql: true
 })))

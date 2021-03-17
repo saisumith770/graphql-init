@@ -1,6 +1,7 @@
 import {
     GraphQLSchema,
-    GraphQLObjectType
+    GraphQLObjectType,
+    GraphQLInputObjectType
 } from 'graphql'
 
 import {
@@ -26,6 +27,9 @@ import {
     settings
 } from './query/settings/graph.field'
 
+import { user as user_mutation } from './mutations/user/graph.field'
+import { content as content_mutation } from './mutations/content/graph.field'
+
 export default new GraphQLSchema({
     description: `
         This is a graphql api served with express and express-graphql. It implements standard
@@ -34,7 +38,7 @@ export default new GraphQLSchema({
         connections and more.
     `,
     query: new GraphQLObjectType({
-        name: "PrimaryQuery",
+        name: "RootQuery",
         fields: {
             user,
             users,
@@ -47,9 +51,10 @@ export default new GraphQLSchema({
         }
     }),
     mutation: new GraphQLObjectType({
-        name: "query mutation",
+        name: "mutations",
         fields: {
-
+            user: user_mutation,
+            content: content_mutation
         }
     })
 })

@@ -1,6 +1,4 @@
 import {
-    array,
-    nullable,
     string,
     GraphQLFieldConfig
 } from '../../graph.types'
