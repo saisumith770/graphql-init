@@ -8,8 +8,6 @@ import {
 
 import Date from '../../custom.types/date'
 import { Platforms } from './content.graph.type'
-import User from '../user/user.type'
-import Playlist from '../playlists/playlist.type'
 
 export default new GraphQLObjectType({
     description: `
@@ -25,11 +23,16 @@ export default new GraphQLObjectType({
         published_at: { type: Date },
         platform: { type: Platforms },
         url: { type: string },
-        tags: { type: array(string) },
+        tags: {
+            type: array(string),
+            resolve: async (parent) => {
+                return JSON.parse(parent.tags)
+            }
+        },
         archived: { type: boolean },
         playlists: { // playlists that the vod belongs to
             type: array(string),
-            resolve: (parent, _, ctx) => {
+            resolve: async (parent, _, ctx) => {
                 return ctx.prisma.playlist_vods.findMany({
                     where: {
                         user_id: parent.user_id,

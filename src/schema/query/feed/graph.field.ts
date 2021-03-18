@@ -1,6 +1,5 @@
 import {
     array,
-    nullable,
     string,
     GraphQLFieldConfig
 } from '../../graph.types'
@@ -12,7 +11,7 @@ export const feeds: GraphQLFieldConfig = {
     args: {
         user_id: { type: string }
     },
-    resolve: function (_, { user_id }, ctx) {
+    resolve: async function (_, { user_id }, ctx) {
         return ctx.prisma.feed.findMany({
             where: {
                 user_id

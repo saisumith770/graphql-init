@@ -30,9 +30,9 @@ import {
     playlists
 } from './query/playlists/graph.field'
 
-import { user as user_mutation } from './mutations/user/graph.field'
-import { content as content_mutation } from './mutations/content/graph.field'
-import { settings as settings_mutation } from './mutations/settings/graph.field'
+import { user as updateUser } from './mutations/user/graph.field'
+import { content as updateContent } from './mutations/content/graph.field'
+import { settings as updateSettings } from './mutations/settings/graph.field'
 
 export default new GraphQLSchema({
     description: `
@@ -58,9 +58,9 @@ export default new GraphQLSchema({
     mutation: new GraphQLObjectType({
         name: "mutations",
         fields: {
-            user: user_mutation,
-            content: content_mutation,
-            settings: settings_mutation
+            updateUser,
+            updateContent,
+            updateSettings
         }
     })
 })

@@ -4,7 +4,6 @@ import {
     GraphQLObjectType,
     string
 } from '../../graph.types'
-import User from '../user/user.type'
 
 import Device from './device.type'
 
@@ -18,13 +17,13 @@ const Settings: GraphQLObjectType = new GraphQLObjectType({
         theme: { type: string },
         disable_banner: {
             type: boolean,
-            resolve: (parent, _, __, ___) => {
+            resolve: async (parent, _, __, ___) => {
                 return parent.disable_banner === "true"
             }
         },
         disable_trailer: {
             type: boolean,
-            resolve: (parent, _, __, ___) => {
+            resolve: async (parent, _, __, ___) => {
                 return parent.disable_trailer === "true"
             }
         },

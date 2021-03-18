@@ -22,7 +22,7 @@ const Feed: GraphQLObjectType = new GraphQLObjectType({
         preview: { type: string },
         creator: {
             type: User,
-            resolve: (parent, _, ctx) => {
+            resolve: async (parent, _, ctx) => {
                 return ctx.prisma.users.findFirst({
                     where: {
                         user_id: parent.creator_id
@@ -32,7 +32,7 @@ const Feed: GraphQLObjectType = new GraphQLObjectType({
         },
         viewer: {
             type: User,
-            resolve: (parent, _, ctx) => {
+            resolve: async (parent, _, ctx) => {
                 return ctx.prisma.users.findFirst({
                     where: {
                         user_id: parent.user_id

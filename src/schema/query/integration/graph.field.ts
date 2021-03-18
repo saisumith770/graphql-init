@@ -13,7 +13,7 @@ export const integration: GraphQLFieldConfig = {
         user_id: { type: string },
         platform: { type: string }
     },
-    resolve: function (_, { user_id, platform }, ctx) {
+    resolve: async function (_, { user_id, platform }, ctx) {
         return ctx.prisma.integrations.findFirst({
             where: {
                 user_id,
@@ -28,7 +28,7 @@ export const integrations: GraphQLFieldConfig = {
     args: {
         user_id: { type: string }
     },
-    resolve: function (_, { user_id }, ctx) {
+    resolve: async function (_, { user_id }, ctx) {
         return ctx.prisma.integrations.findMany({
             where: {
                 user_id

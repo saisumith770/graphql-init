@@ -25,16 +25,7 @@ const User: GraphQLInputObjectType = new GraphQLInputObjectType({
         description: { type: string },
         channel_trailer: { type: string },
         banner: { type: string },
-        tags: { type: array(string) },
-        content: {
-            type: Content
-        },
-        settings: {
-            type: Settings
-        },
-        integration: {
-            type: Integration
-        }
+        tags: { type: array(string) }
     })
 })
 

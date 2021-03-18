@@ -27,7 +27,7 @@ export const vod: GraphQLFieldConfig = {
         platform: { type: nullable(Platforms) },
         tags: { type: nullable(array(string)) }
     },
-    resolve: function (_, { user_id, vod_id, title, platform, tags }, ctx) {
+    resolve: async function (_, { user_id, vod_id, title, platform, tags }, ctx) {
         const where: Partial<whereClause> = {}
         if (user_id) where.user_id = user_id
         if (vod_id) where.vod_id = vod_id
@@ -49,7 +49,7 @@ export const vods: GraphQLFieldConfig = {
         platform: { type: nullable(Platforms) },
         tags: { type: nullable(array(string)) }
     },
-    resolve: function (_, { user_id, vod_id, title, platform, tags }, ctx) {
+    resolve: async function (_, { user_id, vod_id, title, platform, tags }, ctx) {
         const where: Partial<whereClause> = {}
         if (user_id) where.user_id = user_id
         if (vod_id) where.vod_id = vod_id
