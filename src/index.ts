@@ -7,13 +7,15 @@ import schema from './schema/schema'
 
 const app = express()
 
+const prisma = new PrismaClient()
+
 app.use('/graphql', graphqlHTTP((req, res, params) => ({
     schema,
     context: {
         req,
         res,
         params,
-        prisma: new PrismaClient()
+        prisma
     },
     graphiql: true
 })))

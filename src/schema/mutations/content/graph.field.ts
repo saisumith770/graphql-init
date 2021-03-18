@@ -1,6 +1,5 @@
 import {
     GraphQLFieldConfig,
-    enumerate,
     string,
 } from '../../graph.types'
 
@@ -8,24 +7,15 @@ import ContentMutation from './content.mutation'
 
 import { ResponseObject } from '../../custom.types/response'
 
-const Methods = new enumerate({
-    name: "Content Mutation Methods",
-    values: {
-        CREATE: { value: "create" },
-        UPDATE: { value: "update" }
-    }
-})
-
-export const content: GraphQLFieldConfig = ({
+export const createContent: GraphQLFieldConfig = ({
     type: ResponseObject,
     args: {
         info: { type: ContentMutation },
-        method: { type: Methods },
         user_id: { type: string },
         vod: { type: string }
     },
     resolve: async (_, args, ctx) => {
-        if (args.method === Methods.getValue('CREATE')) return ctx.prisma.vods.create({
+        return ctx.prisma.vods.create({
             data: {
                 ...args.info
             }
@@ -38,7 +28,18 @@ export const content: GraphQLFieldConfig = ({
                 statusCode: 400,
                 message: "we weren't able to create the content"
             }))
-        else if (args.method === Methods.getValue('UPDATE')) return ctx.prisma.vods.update({
+    }
+})
+
+export const updateContent: GraphQLFieldConfig = ({
+    type: ResponseObject,
+    args: {
+        info: { type: ContentMutation },
+        user_id: { type: string },
+        vod: { type: string }
+    },
+    resolve: async (_, args, ctx) => {
+        return ctx.prisma.vods.update({
             data: {
                 ...args.info
             },
@@ -56,6 +57,33 @@ export const content: GraphQLFieldConfig = ({
             .catch(() => ({
                 statusCode: 401,
                 message: "we weren't able to update the content"
+            }))
+    }
+})
+
+export const addContentToPlaylist: GraphQLFieldConfig = ({
+    type: ResponseObject,
+    args: {
+        vod_id: { type: string },
+        playlist: { type: string },
+        user_id: { type: string }
+    },
+    resolve: async (_, args, ctx) => {
+        return ctx.prisma.playlist_vods.create({
+            data: {
+                name: args.playlist,
+                user_id: args.user_id,
+                vod_id: args.vod_id,
+                created_at: new Date()
+            }
+        })
+            .then(() => ({
+                statusCode: 200,
+                message: "added the content to playlist"
+            }))
+            .catch(() => ({
+                statusCode: 401,
+                message: "we weren't able to add to playlist. check your authorization."
             }))
     }
 })
