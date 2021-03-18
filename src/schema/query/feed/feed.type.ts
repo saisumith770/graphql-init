@@ -21,15 +21,23 @@ const Feed: GraphQLObjectType = new GraphQLObjectType({
         deep_link: { type: string },
         preview: { type: string },
         creator: {
-            type: string,
-            resove: () => {
-                return {}
+            type: User,
+            resolve: (parent, _, ctx) => {
+                return ctx.prisma.users.findFirst({
+                    where: {
+                        user_id: parent.creator_id
+                    }
+                })
             }
         },
         viewer: {
-            type: string,
-            resolve: () => {
-                return {}
+            type: User,
+            resolve: (parent, _, ctx) => {
+                return ctx.prisma.users.findFirst({
+                    where: {
+                        user_id: parent.user_id
+                    }
+                })
             }
         }
     })

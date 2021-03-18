@@ -8,9 +8,17 @@ import {
 import Content from './content.type'
 import { Platforms } from './content.graph.type'
 
-import { users as fakeUsers } from '../../../fakedata/user'
+type whereClause = {
+    user_id: string,
+    vod_id: string,
+    title: string,
+    platform: string,
+    tags: {
+        equals: string
+    }
+}
 
-export const vod: GraphQLFieldConfig<any, any> = {
+export const vod: GraphQLFieldConfig = {
     type: Content,
     args: {
         user_id: { type: nullable(string) },
@@ -19,12 +27,20 @@ export const vod: GraphQLFieldConfig<any, any> = {
         platform: { type: nullable(Platforms) },
         tags: { type: nullable(array(string)) }
     },
-    resolve: function (_, { }, ctx) {
-        return fakeUsers
+    resolve: function (_, { user_id, vod_id, title, platform, tags }, ctx) {
+        const where: Partial<whereClause> = {}
+        if (user_id) where.user_id = user_id
+        if (vod_id) where.vod_id = vod_id
+        if (title) where.title = title
+        if (platform) where.platform = platform
+        if (tags) where.tags!.equals = JSON.stringify(tags)
+        return ctx.prisma.vods.findFirst({
+            where
+        })
     }
 }
 
-export const vods: GraphQLFieldConfig<any, any> = {
+export const vods: GraphQLFieldConfig = {
     type: array(Content),
     args: {
         user_id: { type: nullable(string) },
@@ -33,7 +49,15 @@ export const vods: GraphQLFieldConfig<any, any> = {
         platform: { type: nullable(Platforms) },
         tags: { type: nullable(array(string)) }
     },
-    resolve: function () {
-        return fakeUsers
+    resolve: function (_, { user_id, vod_id, title, platform, tags }, ctx) {
+        const where: Partial<whereClause> = {}
+        if (user_id) where.user_id = user_id
+        if (vod_id) where.vod_id = vod_id
+        if (title) where.title = title
+        if (platform) where.platform = platform
+        if (tags) where.tags!.equals = JSON.stringify(tags)
+        return ctx.prisma.vods.findMany({
+            where
+        })
     }
 }

@@ -7,14 +7,16 @@ import {
 
 import Feed from './feed.type'
 
-import { users as fakeUsers } from '../../../fakedata/user'
-
-export const feeds: GraphQLFieldConfig<any, any> = {
+export const feeds: GraphQLFieldConfig = {
     type: array(Feed),
     args: {
         user_id: { type: string }
     },
-    resolve: function () {
-        return fakeUsers
+    resolve: function (_, { user_id }, ctx) {
+        return ctx.prisma.feed.findMany({
+            where: {
+                user_id
+            }
+        })
     }
 }

@@ -9,6 +9,7 @@ import {
 import Date from '../../custom.types/date'
 import { Platforms } from './content.graph.type'
 import User from '../user/user.type'
+import Playlist from '../playlists/playlist.type'
 
 export default new GraphQLObjectType({
     description: `
@@ -26,22 +27,18 @@ export default new GraphQLObjectType({
         url: { type: string },
         tags: { type: array(string) },
         archived: { type: boolean },
-        creator: { // creator of the vod
-            type: string,
-            resolve: (parent, _, ctx) => {
-                return {}
-            }
-        },
         playlists: { // playlists that the vod belongs to
             type: array(string),
             resolve: (parent, _, ctx) => {
-                return {}
-            }
-        },
-        user: {
-            type: string,
-            resolve: () => {
-                return {}
+                return ctx.prisma.playlist_vods.findMany({
+                    where: {
+                        user_id: parent.user_id,
+                        vod_id: parent.vod_id
+                    },
+                    select: {
+                        name: true
+                    }
+                })
             }
         }
     }

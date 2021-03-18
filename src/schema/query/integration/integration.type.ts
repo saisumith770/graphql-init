@@ -23,13 +23,7 @@ const Integration: GraphQLObjectType = new GraphQLObjectType({
         access_token: { type: string },
         refresh_token: { type: string },
         platform_user_id: { type: string },
-        created_at: { type: Date },
-        user: {
-            type: string,
-            resolve: () => {
-                return {}
-            }
-        }
+        created_at: { type: Date }
     })
 })
 

@@ -36,7 +36,7 @@ const User: GraphQLObjectType = new GraphQLObjectType({
         description: { type: nullable(string) },
         channel_trailer: { type: nullable(string) },
         banner: { type: nullable(string) },
-        tags: { type: nullable(array(string)) },
+        tags: { type: nullable(string) },
         content: { // get all the user content
             type: array(Content),
             resolve: async (parent, __, ctx) => {

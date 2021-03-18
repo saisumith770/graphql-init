@@ -37,16 +37,6 @@ const Settings: GraphQLObjectType = new GraphQLObjectType({
                     }
                 })
             }
-        },
-        user: {
-            type: string,
-            resolve: (parent, _, ctx) => {
-                return ctx.prisma.users.findFirst({
-                    where: {
-                        user_id: parent.user_id
-                    }
-                })
-            }
         }
     }
 })
