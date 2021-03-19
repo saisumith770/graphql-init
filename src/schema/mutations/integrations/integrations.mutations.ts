@@ -1,8 +1,6 @@
 import { GraphQLInputObjectType } from 'graphql'
 import {
-    array,
     boolean,
-    int,
     string,
 } from '../../graph.types'
 

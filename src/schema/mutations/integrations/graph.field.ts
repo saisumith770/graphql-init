@@ -10,46 +10,60 @@ import { ResponseObject } from '../../custom.types/response'
 export const connectPlatform: GraphQLFieldConfig = ({
     type: ResponseObject,
     args: {
-        info: { type: IntergationMutation },
-        user_id: { type: string }
+        info: { type: IntergationMutation }
     },
     resolve: async (_, args, ctx) => {
-        return ctx.prisma.integrations.create({
-            data: {
-                ...args.info
-            }
+        if (ctx.req.query.identifier !== "unknown user") {
+            return ctx.prisma.integrations.create({
+                data: {
+                    users: {
+                        connect: {
+                            user_id: ctx.req.query.identifier as string
+                        }
+                    },
+                    created_at: new Date(),
+                    ...args.info
+                }
+            })
+                .then(() => ({
+                    statusCode: 200,
+                    message: "the settings have been updated"
+                }))
+                .catch(() => ({
+                    statusCode: 404,
+                    message: "we weren't able to update the settings check your authorisation"
+                }))
+        } else return ({
+            statusCode: 401,
+            message: "UNAUTHORISED ACCESS"
         })
-            .then(() => ({
-                statusCode: 200,
-                message: "the settings have been updated"
-            }))
-            .catch(() => ({
-                statusCode: 404,
-                message: "we weren't able to update the settings check your authorisation"
-            }))
     }
 })
 
 export const removePlatform: GraphQLFieldConfig = ({
     type: ResponseObject,
     args: {
-        platform: { type: string },
-        user_id: { type: string }
+        platform: { type: string }
     },
     resolve: async (_, args, ctx) => {
-        return ctx.prisma.integrations.deleteMany({
-            where: {
-                user_id: args.user_id,
-                platform: args.platform
-            }
+        if (ctx.req.query.identifier !== "unknown user") {
+            return ctx.prisma.integrations.deleteMany({
+                where: {
+                    user_id: ctx.req.query.identifier as string,
+                    platform: args.platform
+                }
+            })
+                .then(() => ({
+                    statusCode: 200,
+                    message: "the settings have been updated"
+                }))
+                .catch(() => ({
+                    statusCode: 404,
+                    message: "we weren't able to update the settings check your authorisation"
+                }))
+        } else return ({
+            statusCode: 401,
+            message: "UNAUTHORISED ACCESS"
         })
-            .then(() => ({
-                statusCode: 200,
-                message: "the settings have been updated"
-            }))
-            .catch(() => ({
-                statusCode: 404,
-                message: "we weren't able to update the settings check your authorisation"
-            }))
     }
 })

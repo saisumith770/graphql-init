@@ -4,7 +4,6 @@ import {
     string,
     boolean
 } from '../../graph.types'
-import Date from '../../custom.types/date'
 
 const Content: GraphQLInputObjectType = new GraphQLInputObjectType({
     description: `
