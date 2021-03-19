@@ -29,9 +29,27 @@ const User: GraphQLObjectType = new GraphQLObjectType({
         viewers: { type: int },
         subscription: { type: int },
         vods: { type: int },
-        twofactor: { type: boolean },
-        email: { type: string },
-        phone: { type: nullable(int) },
+        twofactor: {
+            type: nullable(boolean),
+            resolve: (parent, _, ctx) => {
+                if (ctx.req.query.identifier === parent.user_id) return parent.twofactor
+                return null
+            }
+        },
+        email: {
+            type: nullable(string),
+            resolve: (parent, _, ctx) => {
+                if (ctx.req.query.identifier === parent.user_id) return parent.email
+                return null
+            }
+        },
+        phone: {
+            type: nullable(int),
+            resolve: (parent, _, ctx) => {
+                if (ctx.req.query.identifier === parent.user_id) return parent.phone
+                return null
+            }
+        },
         photo: { type: nullable(string) },
         description: { type: nullable(string) },
         channel_trailer: { type: nullable(string) },
@@ -63,53 +81,63 @@ const User: GraphQLObjectType = new GraphQLObjectType({
             }
         },
         subscriptions: { // get all the creators subscribed to
-            type: array(User),
+            type: nullable(array(User)),
             resolve: async (parent, _, ctx) => {
-                return ctx.prisma.subscription_manager.findMany({
-                    where: {
-                        viewer_id: parent.user_id
-                    }
-                })
+                if (ctx.req.query.identifier === parent.user_id) {
+                    return ctx.prisma.subscription_manager.findMany({
+                        where: {
+                            viewer_id: parent.user_id
+                        }
+                    })
+                } else return null
             }
         },
         subscribers: { // get all the viewers
-            type: array(User),
+            type: nullable(array(User)),
             resolve: async (parent, _, ctx) => {
-                return ctx.prisma.subscription_manager.findMany({
-                    where: {
-                        creator_id: parent.user_id
-                    }
-                })
+                if (ctx.req.query.identifier === parent.user_id) {
+                    return ctx.prisma.subscription_manager.findMany({
+                        where: {
+                            creator_id: parent.user_id
+                        }
+                    })
+                } else return null
             }
         },
         integrations: { // get all the connected platforms
-            type: Integration,
+            type: nullable(Integration),
             resolve: async (parent, _, ctx) => {
-                return ctx.prisma.integrations.findMany({
-                    where: {
-                        user_id: parent.user_id
-                    }
-                })
+                if (ctx.req.query.identifier === parent.user_id) {
+                    return ctx.prisma.integrations.findMany({
+                        where: {
+                            user_id: parent.user_id
+                        }
+                    })
+                } else return null
             }
         },
         settings: { // get all the user settings
-            type: Settings,
+            type: nullable(Settings),
             resolve: async (parent, _, ctx) => {
-                return ctx.prisma.settings.findFirst({
-                    where: {
-                        user_id: parent.user_id
-                    }
-                })
+                if (ctx.req.query.identifier === parent.user_id) {
+                    return ctx.prisma.settings.findFirst({
+                        where: {
+                            user_id: parent.user_id
+                        }
+                    })
+                } else return null
             }
         },
         feed: {
-            type: array(Feed),
+            type: nullable(array(Feed)),
             resolve: async (parent, _, ctx) => {
-                return ctx.prisma.feed.findMany({
-                    where: {
-                        user_id: parent.user_id
-                    }
-                })
+                if (ctx.req.query.identifier === parent.user_id) {
+                    return ctx.prisma.feed.findMany({
+                        where: {
+                            user_id: parent.user_id
+                        }
+                    })
+                } else return null
             }
         }
     })

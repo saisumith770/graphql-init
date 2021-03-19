@@ -13,7 +13,6 @@ const Playlist: GraphQLInputObjectType = new GraphQLInputObjectType({
     `,
     name: "playlist_mutation",
     fields: () => ({
-        user_id: { type: string },
         name: { type: string },
         created_at: { type: Date },
         vods: { type: int }

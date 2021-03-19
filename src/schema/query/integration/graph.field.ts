@@ -8,31 +8,31 @@ import {
 import Integration from './integration.type'
 
 export const integration: GraphQLFieldConfig = {
-    type: Integration,
+    type: nullable(Integration),
     args: {
-        user_id: { type: string },
         platform: { type: string }
     },
-    resolve: async function (_, { user_id, platform }, ctx) {
-        return ctx.prisma.integrations.findFirst({
-            where: {
-                user_id,
-                platform
-            }
-        })
+    resolve: async function (_, { platform }, ctx) {
+        if (ctx.req.query.identifier === "unknown user") {
+            return ctx.prisma.integrations.findFirst({
+                where: {
+                    user_id: ctx.req.query.identifier as string,
+                    platform
+                }
+            })
+        } else return null
     }
 }
 
 export const integrations: GraphQLFieldConfig = {
-    type: array(Integration),
-    args: {
-        user_id: { type: string }
-    },
-    resolve: async function (_, { user_id }, ctx) {
-        return ctx.prisma.integrations.findMany({
-            where: {
-                user_id
-            }
-        })
+    type: nullable(array(Integration)),
+    resolve: async function (_, __, ctx) {
+        if (ctx.req.query.identifier === "unknown user") {
+            return ctx.prisma.integrations.findMany({
+                where: {
+                    user_id: ctx.req.query.identifier as string
+                }
+            })
+        } else return null
     }
 }

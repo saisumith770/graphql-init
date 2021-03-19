@@ -1,21 +1,21 @@
 import {
     array,
     string,
-    GraphQLFieldConfig
+    GraphQLFieldConfig,
+    nullable
 } from '../../graph.types'
 
 import Feed from './feed.type'
 
 export const feeds: GraphQLFieldConfig = {
-    type: array(Feed),
-    args: {
-        user_id: { type: string }
-    },
-    resolve: async function (_, { user_id }, ctx) {
-        return ctx.prisma.feed.findMany({
-            where: {
-                user_id
-            }
-        })
+    type: nullable(array(Feed)),
+    resolve: async function (_, __, ctx) {
+        if (ctx.req.query.identifier === "unknown user") {
+            return ctx.prisma.feed.findMany({
+                where: {
+                    user_id: ctx.req.query.identifier as string
+                }
+            })
+        } else return null
     }
 }
